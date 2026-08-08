@@ -90,7 +90,15 @@ public class Videoclub {
 	 */
 	public Map<String, Integer> contarPeliculasPorGenero() {
 		// TODO: reemplazar esta línea por la lógica descrita arriba.
-		throw new UnsupportedOperationException("TODO: completar contarPeliculasPorGenero() en Videoclub");
+		Map<String, Integer> conteo = new HashMap<>();
+
+		for (Pelicula pelicula : peliculas) {
+			String genero = pelicula.getGenero();
+			int cantidad = conteo.getOrDefault(genero, 0);
+			conteo.put(genero, cantidad + 1);
+		}
+
+		return conteo;
 	}
 
 	/**
@@ -115,7 +123,15 @@ public class Videoclub {
 	 */
 	public List<Pelicula> buscarPorTituloParcial(String texto) {
 		// TODO: reemplazar esta línea por la lógica descrita arriba.
-		throw new UnsupportedOperationException("TODO: completar buscarPorTituloParcial() en Videoclub");
+		List<Pelicula> resultados = new ArrayList<>();
+
+		for (Pelicula pelicula : peliculas) {
+			if (pelicula.getTitulo().toLowerCase().contains(texto.toLowerCase())) {
+				resultados.add(pelicula);
+			}
+		}
+
+		return resultados;
 	}
 
 	/**
@@ -144,7 +160,21 @@ public class Videoclub {
 	 */
 	public Pelicula peliculaMasAntiguaDeGenero(String genero) {
 		// TODO: reemplazar esta línea por la lógica descrita arriba.
-		throw new UnsupportedOperationException("TODO: completar peliculaMasAntiguaDeGenero() en Videoclub");
+		Pelicula masAntigua = null;
+
+		for (Pelicula pelicula : peliculas) {
+
+			if (pelicula.getGenero().equals(genero)) {
+
+				if (masAntigua == null
+						|| pelicula.getAnioEstreno() < masAntigua.getAnioEstreno()) {
+
+					masAntigua = pelicula;
+				}
+			}
+		}
+
+		return masAntigua;
 	}
 
 	/**
@@ -168,7 +198,17 @@ public class Videoclub {
 	 */
 	public Pelicula alquilarPrimeraDisponibleDeGenero(String genero) throws PeliculaNoDisponibleException {
 		// TODO (opcional): reemplazar esta línea por la lógica descrita arriba.
-		throw new UnsupportedOperationException(
-				"TODO opcional: completar alquilarPrimeraDisponibleDeGenero() en Videoclub");
+		for (Pelicula pelicula : peliculas) {
+
+			if (pelicula.getGenero().equals(genero)
+					&& pelicula.estaDisponible()) {
+
+				pelicula.alquilar();
+				return pelicula;
+			}
+		}
+
+		throw new PeliculaNoDisponibleException(
+				"No hay películas disponibles del género " + genero);
 	}
 }
